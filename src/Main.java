@@ -9,7 +9,7 @@ public class Main {
     private static final int N = 3;
     private static final int[] colors = new int[N * 2 + N % 2];
     private static final int[][] graph = new int[N][N];
-    private static final Set<int[]> usedPairs = new HashSet<>(N * N);
+    private static final Set<ColorPair<Integer>> usedPairs = new HashSet<>(N * N);
 
     private static int solutionsCount;
     private static int nodesEnteredCount;
@@ -24,6 +24,7 @@ public class Main {
             colors[i] = i + 1;
         }
         solveWithBackTracking(0);
+        System.out.println("Solutions found: " + solutionsCount);
     }
 
     private static boolean solveWithBackTracking(int index) {
@@ -38,32 +39,52 @@ public class Main {
         nodesEnteredCount++;
 
         for (int i = 0; i < colors.length; i++) {
+            int currentColor = colors[i];
             graph[row][column] = colors[i];
-            if (isValidMove(row, column)) {
+            if (isValidMove(currentColor, row, column)) {
+                saveUsedPairs(currentColor, row, column);
                 solveWithBackTracking(index + 1);
+                removeUsedPairs(currentColor, row, column);
             }
             graph[row][column] = 0;
-            removeDirectNeighborColorsFromUsedPairs(row, column);
         }
         return false;
     }
 
-    private static void removeDirectNeighborColorsFromUsedPairs(int row, int column) {
+    private static void saveUsedPairs(int currentColor, int lastInsertedRow, int lastInsertedColumn) {
+        int[][] markedPairs = new int[4][2]; //pairs to be marked as used
+        int newConstrainingPairsCount = 0;
+        for (int i = 0; i < 4; i++) {
+            try {
+                int color2 = graph[lastInsertedRow + direct_neighbors_x_off[i]][lastInsertedColumn + direct_neighbors_y_off[i]];
+
+                if (color2 != 0) {
+                    markedPairs[newConstrainingPairsCount][0] = currentColor;
+                    markedPairs[newConstrainingPairsCount][1] = color2;
+                    newConstrainingPairsCount++;
+                }
+            } catch (ArrayIndexOutOfBoundsException ignored) {
+            }
+        }
+        for (int i = 0; i < newConstrainingPairsCount; i++) {
+            markColorPairAsUsed(markedPairs[i][0], markedPairs[i][1]);
+        }
+    }
+
+    private static void removeUsedPairs(int lastAddedColor, int row, int column) {
         for (int i = 0; i < direct_neighbors_x_off.length; i++) {
             try {
-                int color1 = graph[row][column];
                 int color2 = graph[row + direct_neighbors_x_off[i]][column + direct_neighbors_y_off[i]];
 
                 if (color2 != 0) {
-                    usedPairs.remove(new ColorPair<>(color1, color2));
+                    usedPairs.remove(new ColorPair<>(lastAddedColor, color2));
                 }
-            } catch (ArrayIndexOutOfBoundsException ignroed) {
+            } catch (ArrayIndexOutOfBoundsException ignored) {
             }
         }
     }
 
-    private static boolean isValidMove(int lastInsertedRow, int lastInsertedColumn) {
-        boolean result = true;
+    private static boolean isValidMove(int lastInsertedColor, int lastInsertedRow, int lastInsertedColumn) {
         for (int i = 0; i < 12; i++) {
             try {
                 if (graph[lastInsertedRow + harmonic_neighbors_x_off[i]][lastInsertedColumn + harmonic_neighbors_y_off[i]] == graph[lastInsertedRow][lastInsertedColumn]) { //if there is the same color among too close neighbors
@@ -72,22 +93,15 @@ public class Main {
             } catch (ArrayIndexOutOfBoundsException ignored) {
             }
         }
-        for (int i = 0; i < direct_neighbors_x_off.length; i++) {
+        for (int i = 0; i < 4; i++) {
             try {
-                int color1 = graph[lastInsertedRow][lastInsertedColumn];
-                int color2 = graph[lastInsertedRow + direct_neighbors_x_off[i]][lastInsertedColumn + direct_neighbors_y_off[i]];
-
-                if (color2 != 0) {
-                    if (isColorPairAlreadyUsed(color1, color2)) {
-                        return false;
-                    } else {
-                        markColorPairAsUsed(color1, color2);
-                    }
+                if (isColorPairAlreadyUsed(lastInsertedColor, graph[lastInsertedRow + direct_neighbors_x_off[i]][lastInsertedColumn + direct_neighbors_y_off[i]])) {
+                    return false;
                 }
             } catch (ArrayIndexOutOfBoundsException ignored) {
             }
         }
-        return result;
+        return true;
     }
 
     private static boolean isColorPairAlreadyUsed(int color1, int color2) {
@@ -95,10 +109,11 @@ public class Main {
     }
 
     private static void markColorPairAsUsed(int color1, int color2) {
-        usedPairs.add(new int[]{color1, color2});
+        usedPairs.add(new ColorPair<>(color1, color2));
     }
 
     private static void printSolution() {
-        Arrays.deepToString(graph);
+        if (solutionsCount % 10000 == 0)
+            System.out.println(Arrays.deepToString(graph));
     }
 }
