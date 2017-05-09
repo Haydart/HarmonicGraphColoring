@@ -18,8 +18,11 @@ public class Main {
     static final int[] direct_neighbors_y_off = {-1, 0, 1, 0};
 
     public static void main(String[] args) {
+        for (int row = 0; row < N; row++)
+            for (int col = 0; col < N; col++)
+                graph[row][col] = -1;
         for (int i = 0; i < colors.length; i++) {
-            colors[i] = i + 1;
+            colors[i] = i;
         }
         long startTime = System.currentTimeMillis();
         solveWithBackTracking(0);
@@ -39,26 +42,29 @@ public class Main {
 
         for (int i = 0; i < colors.length; i++) {
             int currentColor = colors[i];
-            graph[row][column] = colors[i];
+            graph[row][column] = currentColor;
             if (isValidMove(currentColor, row, column)) {
                 saveUsedPairs(currentColor, row, column);
                 solveWithBackTracking(index + 1);
                 removeUsedPairs(currentColor, row, column);
             }
-            graph[row][column] = 0;
+            graph[row][column] = -1;
         }
         return false;
     }
 
     private static boolean isValidMove(int lastInsertedColor, int lastInsertedRow, int lastInsertedColumn) {
+        int neighborRow, neighborColumn;
         for (int i = 0; i < 12; i++) {
-            try {
-                if (graph[lastInsertedRow + harmonic_neighbors_x_off[i]][lastInsertedColumn + harmonic_neighbors_y_off[i]] == graph[lastInsertedRow][lastInsertedColumn]) { //if there is the same color among too close neighbors
+            neighborRow = lastInsertedRow + harmonic_neighbors_x_off[i];
+            neighborColumn = lastInsertedColumn + harmonic_neighbors_y_off[i];
+            if (neighborRow >= 0 && neighborRow < N && neighborColumn >= 0 && neighborColumn < N) {
+                if (graph[lastInsertedRow][lastInsertedColumn] == graph[neighborRow][neighborColumn]) {
                     return false;
                 }
-            } catch (ArrayIndexOutOfBoundsException ignored) {
             }
         }
+
         for (int i = 0; i < 4; i++) {
             try {
                 if (isColorPairAlreadyUsed(lastInsertedColor, graph[lastInsertedRow + direct_neighbors_x_off[i]][lastInsertedColumn + direct_neighbors_y_off[i]])) {
@@ -71,43 +77,45 @@ public class Main {
     }
 
     private static boolean isColorPairAlreadyUsed(int color1, int color2) {
-        return usedPairsArray[color1 - 1][color2 - 1] && usedPairsArray[color2 - 1][color1 - 1];
+        return usedPairsArray[color1][color2] && usedPairsArray[color2][color1];
     }
 
     private static void saveUsedPairs(int currentColor, int lastInsertedRow, int lastInsertedColumn) {
+        int neighborRow, neighborColumn, neighborColor;
         for (int i = 0; i < 4; i++) {
-            int neighborRow = lastInsertedRow + direct_neighbors_x_off[i];
-            int neighborColumn = lastInsertedColumn + direct_neighbors_y_off[i];
+            neighborRow = lastInsertedRow + direct_neighbors_x_off[i];
+            neighborColumn = lastInsertedColumn + direct_neighbors_y_off[i];
             if (neighborRow >= 0 && neighborRow < N && neighborColumn >= 0 && neighborColumn < N) {
-                int neigborColor = graph[neighborRow][neighborColumn];
-                if (neigborColor != 0) {
-                    markColorPairAsUsed(currentColor, neigborColor);
+                neighborColor = graph[neighborRow][neighborColumn];
+                if (neighborColor != -1) {
+                    markColorPairAsUsed(currentColor, neighborColor);
                 }
             }
         }
     }
 
     private static void markColorPairAsUsed(int lastAddedColor, int neighborColor) {
-        usedPairsArray[lastAddedColor - 1][neighborColor - 1] = true;
-        usedPairsArray[neighborColor - 1][lastAddedColor - 1] = true;
+        usedPairsArray[lastAddedColor][neighborColor] = true;
+        usedPairsArray[neighborColor][lastAddedColor] = true;
     }
 
     private static void removeUsedPairs(int lastAddedColor, int row, int column) {
+        int neighborRow, neighborColumn, neighborColor;
         for (int i = 0; i < 4; i++) {
-            try {
-                int neighborColor = graph[row + direct_neighbors_x_off[i]][column + direct_neighbors_y_off[i]];
-
-                if (neighborColor != 0) {
+            neighborRow = row + direct_neighbors_x_off[i];
+            neighborColumn = column + direct_neighbors_y_off[i];
+            if (neighborRow >= 0 && neighborRow < N && neighborColumn >= 0 && neighborColumn < N) {
+                neighborColor = graph[neighborRow][neighborColumn];
+                if (neighborColor != -1) {
                     removeUsedPair(lastAddedColor, neighborColor);
                 }
-            } catch (ArrayIndexOutOfBoundsException ignored) {
             }
         }
     }
 
     private static void removeUsedPair(int lastAddedColor, int neighborColor) {
-        usedPairsArray[lastAddedColor - 1][neighborColor - 1] = false;
-        usedPairsArray[neighborColor - 1][lastAddedColor - 1] = false;
+        usedPairsArray[lastAddedColor][neighborColor] = false;
+        usedPairsArray[neighborColor][lastAddedColor] = false;
     }
 
     private static void printSolution() {
