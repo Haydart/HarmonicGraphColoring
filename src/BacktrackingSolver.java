@@ -77,7 +77,7 @@ public class BacktrackingSolver implements ISolver {
     }
 
     private boolean isValidMove(int lastInsertedColor, int lastInsertedRow, int lastInsertedColumn) {
-        int neighborColors[] = new int[]{-1, -1, -1, -1};
+        int neighborColors[] = new int[]{-1, -1};
 
         if (lastInsertedRow > 0)
             neighborColors[0] = graph[lastInsertedRow - 1][lastInsertedColumn];
@@ -85,13 +85,15 @@ public class BacktrackingSolver implements ISolver {
         if (lastInsertedColumn > 0)
             neighborColors[1] = graph[lastInsertedRow][lastInsertedColumn - 1];
 
-        if (lastInsertedRow < graphSize - 1)
+        //with current graph traversing, we only need to check neighbors on the left and up from the current node
+
+        /*if (lastInsertedRow < graphSize - 1)
             neighborColors[2] = graph[lastInsertedRow + 1][lastInsertedColumn];
 
         if (lastInsertedColumn < graphSize - 1)
-            neighborColors[3] = graph[lastInsertedRow][lastInsertedColumn + 1];
+            neighborColors[3] = graph[lastInsertedRow][lastInsertedColumn + 1];*/
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 2; i++)
             if (!isColorPairValid(lastInsertedColor, neighborColors[i]))
                 return false;
         return true;
@@ -102,21 +104,23 @@ public class BacktrackingSolver implements ISolver {
     }
 
     private void saveUsedPairs(int currentColor, int lastInsertedRow, int lastInsertedColumn) {
-        int neighborColors[] = new int[]{-1, -1, -1, -1};
+        int neighborColors[] = new int[]{-1, -1};
 
         if (lastInsertedRow > 0)
             neighborColors[0] = graph[lastInsertedRow - 1][lastInsertedColumn];
 
-        if (lastInsertedRow < graphSize - 1)
-            neighborColors[1] = graph[lastInsertedRow + 1][lastInsertedColumn];
-
         if (lastInsertedColumn > 0)
-            neighborColors[2] = graph[lastInsertedRow][lastInsertedColumn - 1];
+            neighborColors[1] = graph[lastInsertedRow][lastInsertedColumn - 1];
+
+        //with current graph traversing, we only need to check neighbors on the left and up from the current node
+
+        /*if (lastInsertedRow < graphSize - 1)
+            neighborColors[2] = graph[lastInsertedRow + 1][lastInsertedColumn];
 
         if (lastInsertedColumn < graphSize - 1)
-            neighborColors[3] = graph[lastInsertedRow][lastInsertedColumn + 1];
+            neighborColors[3] = graph[lastInsertedRow][lastInsertedColumn + 1];*/
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 2; i++) {
             if (neighborColors[i] != -1) {
                 markColorPairAsUsed(currentColor, neighborColors[i]);
             }
@@ -129,21 +133,23 @@ public class BacktrackingSolver implements ISolver {
     }
 
     private void removeUsedPairs(int lastAddedColor, int lastInsertedRow, int lastInsertedColumn) {
-        int neighborColors[] = new int[]{-1, -1, -1, -1};
+        int neighborColors[] = new int[]{-1, -1};
 
         if (lastInsertedRow > 0)
             neighborColors[0] = graph[lastInsertedRow - 1][lastInsertedColumn];
 
-        if (lastInsertedRow < graphSize - 1)
-            neighborColors[1] = graph[lastInsertedRow + 1][lastInsertedColumn];
-
         if (lastInsertedColumn > 0)
-            neighborColors[2] = graph[lastInsertedRow][lastInsertedColumn - 1];
+            neighborColors[1] = graph[lastInsertedRow][lastInsertedColumn - 1];
+
+        //with current graph traversing, we only need to check neighbors on the left and up from the current node
+
+        /*if (lastInsertedRow < graphSize - 1)
+            neighborColors[2] = graph[lastInsertedRow + 1][lastInsertedColumn];
 
         if (lastInsertedColumn < graphSize - 1)
-            neighborColors[3] = graph[lastInsertedRow][lastInsertedColumn + 1];
+            neighborColors[3] = graph[lastInsertedRow][lastInsertedColumn + 1];*/
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 2; i++) {
             if (neighborColors[i] != -1) {
                 removeUsedPair(lastAddedColor, neighborColors[i]);
             }

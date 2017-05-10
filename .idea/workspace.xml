@@ -4,7 +4,7 @@
     <list default="true" id="2201fc43-c3b5-488f-a5ad-9b7bf55bb529" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/BacktrackingSolver.java" afterPath="$PROJECT_DIR$/src/BacktrackingSolver.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ForwardCheckingSolver.java" afterPath="$PROJECT_DIR$/src/ForwardCheckingSolver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Runner.java" afterPath="$PROJECT_DIR$/src/Runner.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,8 +36,8 @@
       <file leaf-file-name="BacktrackingSolver.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/BacktrackingSolver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="57" lean-forward="true" selection-start-line="16" selection-start-column="57" selection-end-line="16" selection-end-column="57" />
+            <state relative-caret-position="376">
+              <caret line="146" column="79" lean-forward="true" selection-start-line="146" selection-start-column="79" selection-end-line="146" selection-end-column="79" />
               <folding />
             </state>
           </provider>
@@ -84,8 +84,8 @@
         <option value="$PROJECT_DIR$/src/SolutionPrinter.java" />
         <option value="$PROJECT_DIR$/src/ISolutionPrinter.java" />
         <option value="$PROJECT_DIR$/src/ForwardCheckingSolver.java" />
-        <option value="$PROJECT_DIR$/src/Runner.java" />
         <option value="$PROJECT_DIR$/src/BacktrackingSolver.java" />
+        <option value="$PROJECT_DIR$/src/Runner.java" />
       </list>
     </option>
   </component>
@@ -357,7 +357,14 @@
       <option name="project" value="LOCAL" />
       <updated>1494413895044</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Hugely optimise validation methods">
+      <created>1494447173406</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1494447173406</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -371,7 +378,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5592417" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2281167" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33289126" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2523719" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24034335" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -418,7 +425,8 @@
     <MESSAGE value="Rely on O(1) square matrix in calculating used pairs" />
     <MESSAGE value="Perform minor code optimisations" />
     <MESSAGE value="Refactor project code&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor project code&#10;" />
+    <MESSAGE value="Hugely optimise validation methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="Hugely optimise validation methods" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -463,25 +471,25 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/BacktrackingSolver.java</url>
-          <line>94</line>
+          <line>96</line>
           <properties />
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/BacktrackingSolver.java</url>
-          <line>95</line>
+          <line>97</line>
           <properties />
           <option name="timeStamp" value="83" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/BacktrackingSolver.java</url>
-          <line>96</line>
+          <line>98</line>
           <properties />
           <option name="timeStamp" value="84" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/BacktrackingSolver.java</url>
-          <line>153</line>
+          <line>159</line>
           <properties />
           <option name="timeStamp" value="85" />
         </line-breakpoint>
@@ -764,8 +772,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/BacktrackingSolver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="57" lean-forward="true" selection-start-line="16" selection-start-column="57" selection-end-line="16" selection-end-column="57" />
+        <state relative-caret-position="376">
+          <caret line="146" column="79" lean-forward="true" selection-start-line="146" selection-start-column="79" selection-end-line="146" selection-end-column="79" />
           <folding />
         </state>
       </provider>
