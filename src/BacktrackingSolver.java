@@ -47,7 +47,8 @@ public class BacktrackingSolver implements ISolver {
     public RunStatistics solveHarmonicGraphColoring() {
         long startTime = System.currentTimeMillis();
         solveWithBackTracking(0);
-        System.out.println("Solutions found: " + statistics.solutionsCount + " in " + (System.currentTimeMillis() - startTime) + " ms");
+        statistics.totalTime = (System.currentTimeMillis() - startTime);
+        System.out.println("Solutions found: " + statistics.solutionsCount + " in " + statistics.totalTime + " ms");
         return statistics;
     }
 
