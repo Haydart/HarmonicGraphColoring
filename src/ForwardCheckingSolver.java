@@ -32,7 +32,7 @@ public class ForwardCheckingSolver implements ISolver {
     private void initGraphArray() {
         for (int row = 0; row < graphSize; row++)
             for (int col = 0; col < graphSize; col++)
-                graph[row][col] = 0;
+                graph[row][col] = -1;
     }
 
     private void initPossibleColorsArray() {
@@ -44,7 +44,7 @@ public class ForwardCheckingSolver implements ISolver {
 
     private void initColorsArray() {
         for (int i = 0; i < colors.length; i++) {
-            colors[i] = i + 1;
+            colors[i] = i;
         }
     }
 
@@ -65,7 +65,7 @@ public class ForwardCheckingSolver implements ISolver {
 
         statistics.nodesEnteredCount++;
 
-        for (int i = 0; i < colors.length; ++i) {
+        for (int i = 0; i < colors.length; i++) {
             if (possibleColorsArray[row][column][i]) {
                 int color = colors[i];
                 graph[row][column] = color;
@@ -74,7 +74,7 @@ public class ForwardCheckingSolver implements ISolver {
                 if (isForwardCheckedFutureValid(column, row) && solveWithForwardChecking(moveToNextColumn ? column + 1 : column, moveToNextColumn ? 0 : row + 1))
                     return true;
                 removeUsedPairs(column, row, color);
-                graph[row][column] = 0;
+                graph[row][column] = -1;
                 revertForwardCheck(column, row);
             }
         }
@@ -82,7 +82,7 @@ public class ForwardCheckingSolver implements ISolver {
     }
 
     boolean isColorValidForPosition(int col, int row, int color) {
-        int neighborColors[] = new int[2];
+        int neighborColors[] = new int[]{-1, -1};
 
         if (row > 0)
             neighborColors[0] = graph[row - 1][col];
@@ -100,7 +100,7 @@ public class ForwardCheckingSolver implements ISolver {
         if (currentColor == newColor)
             return false;
 
-        return currentColor == 0 || !usedPairsArray[currentColor - 1][newColor - 1];
+        return currentColor == -1 || !usedPairsArray[currentColor][newColor];
     }
 
     private boolean isForwardCheckedFutureValid(int column, int row) {
@@ -113,13 +113,13 @@ public class ForwardCheckingSolver implements ISolver {
 
     boolean applyOrRevertForwardCheck(int column, int row, boolean forward) {
         if (row < graphSize - 1) {
-            for (int i = row + 1; i < graphSize; ++i) {
+            for (int i = row + 1; i < graphSize; i++) {
                 if (forward) {
                     boolean foundSafe = false;
-                    for (int g = 0; g < colors.length; ++g) {
-                        if (possibleColorsArray[i][column][g]) {
-                            if (!isColorValidForPosition(column, i, colors[g]))
-                                possibleColorsArray[i][column][g] = false;
+                    for (int j = 0; j < colors.length; j++) {
+                        if (possibleColorsArray[i][column][j]) {
+                            if (!isColorValidForPosition(column, i, colors[j]))
+                                possibleColorsArray[i][column][j] = false;
                             else
                                 foundSafe = true;
                         }
@@ -128,8 +128,8 @@ public class ForwardCheckingSolver implements ISolver {
                     if (!foundSafe)
                         return false;
                 } else {
-                    for (int g = 0; g < colors.length; ++g)
-                        possibleColorsArray[i][column][g] = true;
+                    for (int j = 0; j < colors.length; j++)
+                        possibleColorsArray[i][column][j] = true;
                 }
             }
         }
@@ -137,14 +137,14 @@ public class ForwardCheckingSolver implements ISolver {
         column++;
 
         if (column < graphSize) {
-            for (int i = 0; i < graphSize; ++i) {
-                for (int j = column; j < graphSize; ++j) {
+            for (int i = 0; i < graphSize; i++) {
+                for (int j = column; j < graphSize; j++) {
                     if (forward) {
                         boolean foundSafe = false;
-                        for (int g = 0; g < colors.length; ++g) {
-                            if (possibleColorsArray[i][j][g]) {
-                                if (!isColorValidForPosition(j, i, colors[g]))
-                                    possibleColorsArray[i][j][g] = false;
+                        for (int k = 0; k < colors.length; k++) {
+                            if (possibleColorsArray[i][j][k]) {
+                                if (!isColorValidForPosition(j, i, colors[k]))
+                                    possibleColorsArray[i][j][k] = false;
                                 else
                                     foundSafe = true;
                             }
@@ -153,8 +153,8 @@ public class ForwardCheckingSolver implements ISolver {
                         if (!foundSafe)
                             return false;
                     } else {
-                        for (int g = 0; g < colors.length; ++g)
-                            possibleColorsArray[i][j][g] = true;
+                        for (int k = 0; k < colors.length; k++)
+                            possibleColorsArray[i][j][k] = true;
                     }
                 }
             }
@@ -162,27 +162,27 @@ public class ForwardCheckingSolver implements ISolver {
         return true;
     }
 
-    void applyUsedPairs(int col, int row, int color) {
-        updateUsedPairs(col, row, color, true);
+    void applyUsedPairs(int column, int row, int color) {
+        updateUsedPairs(column, row, color, true);
     }
 
-    void removeUsedPairs(int col, int row, int color) {
-        updateUsedPairs(col, row, color, false);
+    void removeUsedPairs(int column, int row, int color) {
+        updateUsedPairs(column, row, color, false);
     }
 
-    private void updateUsedPairs(int col, int row, int color, boolean newValue) {
-        int neighborColors[] = new int[2];
+    private void updateUsedPairs(int column, int row, int color, boolean newValue) {
+        int neighborColors[] = new int[]{-1, -1};
 
         if (row > 0)
-            neighborColors[0] = graph[row - 1][col];
-        if (col > 0)
-            neighborColors[1] = graph[row][col - 1];
+            neighborColors[0] = graph[row - 1][column];
+        if (column > 0)
+            neighborColors[1] = graph[row][column - 1];
 
         for (int i = 0; i < neighborColors.length; i++) {
             int currentColor = neighborColors[i];
-            if (currentColor != 0) {
-                usedPairsArray[currentColor - 1][color - 1] = newValue;
-                usedPairsArray[color - 1][currentColor - 1] = newValue;
+            if (currentColor != -1) {
+                usedPairsArray[currentColor][color] = newValue;
+                usedPairsArray[color][currentColor] = newValue;
             }
         }
     }
