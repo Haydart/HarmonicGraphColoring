@@ -5,6 +5,7 @@ public class Runner {
     private static final int graphSize = 4;
 
     public static void main(String[] args) {
+        new BacktrackingSolver(graphSize, false).solveHarmonicGraphColoring();
         new ForwardCheckingSolver(graphSize, false).solveHarmonicGraphColoring();
     }
 }

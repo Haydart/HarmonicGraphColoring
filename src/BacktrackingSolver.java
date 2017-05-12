@@ -11,11 +11,6 @@ public class BacktrackingSolver implements ISolver {
     private final int[][] graph;
     private final boolean[][] usedPairsArray;
 
-    /*final int[] harmonic_neighbors_x_off = {-2, -1, -1, -1, 0, 0, 0, 0, 1, 1, 1, 2};
-    final int[] harmonic_neighbors_y_off = {0, 0, 1, -1, -1, 1, -2, 2, 0, 1, -1, 0};
-    final int[] direct_neighbors_x_off = {0, -1, 0, 1};
-    final int[] direct_neighbors_y_off = {-1, 0, 1, 0};*/
-
     BacktrackingSolver(int graphSize, boolean shouldPrintSolutions) {
         this.graphSize = graphSize;
         statistics = new RunStatistics();
@@ -48,7 +43,7 @@ public class BacktrackingSolver implements ISolver {
         long startTime = System.currentTimeMillis();
         solveWithBackTracking(0);
         statistics.totalTime = (System.currentTimeMillis() - startTime);
-        System.out.println("Solutions found: " + statistics.solutionsCount + " in " + statistics.totalTime + " ms");
+        System.out.println("Backtracking - Solutions found: " + statistics.solutionsCount + ", nodes visited: " + statistics.nodesEnteredCount + ", time: " + statistics.totalTime + " ms");
         return statistics;
     }
 
@@ -81,19 +76,10 @@ public class BacktrackingSolver implements ISolver {
 
         if (lastInsertedRow > 0)
             neighborColors[0] = graph[lastInsertedRow - 1][lastInsertedColumn];
-
         if (lastInsertedColumn > 0)
             neighborColors[1] = graph[lastInsertedRow][lastInsertedColumn - 1];
 
-        //with current graph traversing, we only need to check neighbors on the left and up from the current node
-
-        /*if (lastInsertedRow < graphSize - 1)
-            neighborColors[2] = graph[lastInsertedRow + 1][lastInsertedColumn];
-
-        if (lastInsertedColumn < graphSize - 1)
-            neighborColors[3] = graph[lastInsertedRow][lastInsertedColumn + 1];*/
-
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < neighborColors.length; i++)
             if (!isColorPairValid(lastInsertedColor, neighborColors[i]))
                 return false;
         return true;
@@ -108,19 +94,10 @@ public class BacktrackingSolver implements ISolver {
 
         if (lastInsertedRow > 0)
             neighborColors[0] = graph[lastInsertedRow - 1][lastInsertedColumn];
-
         if (lastInsertedColumn > 0)
             neighborColors[1] = graph[lastInsertedRow][lastInsertedColumn - 1];
 
-        //with current graph traversing, we only need to check neighbors on the left and up from the current node
-
-        /*if (lastInsertedRow < graphSize - 1)
-            neighborColors[2] = graph[lastInsertedRow + 1][lastInsertedColumn];
-
-        if (lastInsertedColumn < graphSize - 1)
-            neighborColors[3] = graph[lastInsertedRow][lastInsertedColumn + 1];*/
-
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < neighborColors.length; i++) {
             if (neighborColors[i] != -1) {
                 markColorPairAsUsed(currentColor, neighborColors[i]);
             }
@@ -137,19 +114,10 @@ public class BacktrackingSolver implements ISolver {
 
         if (lastInsertedRow > 0)
             neighborColors[0] = graph[lastInsertedRow - 1][lastInsertedColumn];
-
         if (lastInsertedColumn > 0)
             neighborColors[1] = graph[lastInsertedRow][lastInsertedColumn - 1];
 
-        //with current graph traversing, we only need to check neighbors on the left and up from the current node
-
-        /*if (lastInsertedRow < graphSize - 1)
-            neighborColors[2] = graph[lastInsertedRow + 1][lastInsertedColumn];
-
-        if (lastInsertedColumn < graphSize - 1)
-            neighborColors[3] = graph[lastInsertedRow][lastInsertedColumn + 1];*/
-
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < neighborColors.length; i++) {
             if (neighborColors[i] != -1) {
                 removeUsedPair(lastAddedColor, neighborColors[i]);
             }
